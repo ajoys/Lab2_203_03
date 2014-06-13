@@ -22,23 +22,17 @@ public class GeneralSensorEventListener implements SensorEventListener{
 	private float mNumOfAverage = 0;
 	private float mAverageMax = 0;
 	private float mCurrentMax = 0;
-	private float mAverageMin = 0;
-	private float mCurrentMin = 0;
-	private float TESTMIN;
 	private float x;
 	private float y;
 	private float z;
 	private float maxAmp = (float)2.0;
-	private float minAmp = (float)-0.4;
 	private int stepCounter;
 	// values for the FSM
 	private final int mRest = 0;
 	private final int mRising = 1;
 	private final int mPeak = 2;
 	private final int mFalling = 3;
-	private final int mNegativeFall = 4;
-	private final int mNegativeMin = 5;
-	private final int mNegativeRising = 6;
+	private final int mNegative = 4;
 	//current state instantiated at rest
 	private int currentState = 0;
 	private float zPrev = 0;
@@ -134,51 +128,31 @@ public class GeneralSensorEventListener implements SensorEventListener{
 					if (z <= (maxAmp * 0.1)){
 						currentState = 4;
 					}
-				case mNegativeFall:
-					if (z < minAmp * 0.95){
-						currentState = 5;
-					}
-					break;
-				case mNegativeMin:
-					if (z < mCurrentMin){
-						mCurrentMin = z;
-					}	
-					if (z >= minAmp * 0.95){
-						currentState = 6;
-					}
-					break;
-				case mNegativeRising:
-					mNumOfAverage++;
-					mAverageMax = (mAverageMax + mCurrentMax)/mNumOfAverage ;
-					mCurrentMax = 0;
-					mAverageMin = (mAverageMin + mCurrentMin)/mNumOfAverage;
-					TESTMIN = mCurrentMin;
-					mCurrentMin = 0;
-					stepCounter++;
-		
-					if(mNumOfAverage == 5){
-						if (mAverageMax > 0.8){
-							maxAmp = mAverageMax;
-							mAverageMax = 0;
-							mNumOfAverage = 0;
-						}
-						else{
-							mAverageMax = 0;
-							mNumOfAverage = 0;
-						}
-						
-						if (mAverageMin < 0){
-							minAmp = mAverageMin;
-							mAverageMin = 0;
-						}
+				case mNegative:
+					if (z <=-0.5){
+						mNumOfAverage++;
+						mAverageMax = (mAverageMax + mCurrentMax)/mNumOfAverage ;
+						mCurrentMax = 0;
+						stepCounter++;
 			
+						if(mNumOfAverage == 5){
+							if (mAverageMax > 0.7){
+								maxAmp = mAverageMax;
+								mAverageMax = 0;
+								mNumOfAverage = 0;
+							}
+							else{
+								mAverageMax = 0;
+								mNumOfAverage = 0;
+							}
+				
+						}
+						currentState = 0;
 					}
-					currentState = 0;
 					break;
 			}
 			mTvGen.setText("----" + sensorType + "-----" + value + "\n\nSteps: " + stepCounter + "\n Average: " 
-					+ mAverageMax + "\n" + maxAmp + "\n" + mNumOfAverage + "\nCurrentState" + currentState + "\nMinAmp " + minAmp
-					+ "\nAverage Min" + mAverageMin +"\nCurrent: "  + TESTMIN );
+					+ mAverageMax + "\n" + maxAmp + "\n" + mNumOfAverage + "\nCurrentState" + currentState );
 		}
 	}
 
