@@ -31,7 +31,6 @@ public class GeneralSensorEventListener implements SensorEventListener{
 	private float maxAmp = (float)2.0;
 	private float minAmp = (float)-0.4;
 	private int stepCounter;
-	private boolean hasStepped = false;
 	// values for the FSM
 	private final int mRest = 0;
 	private final int mRising = 1;
