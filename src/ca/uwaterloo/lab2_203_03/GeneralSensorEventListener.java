@@ -29,10 +29,10 @@ public class GeneralSensorEventListener implements SensorEventListener{
 	private int stepCounter;
 	// values for the FSM
 	private final int mRest = 0;
-	private final int mRising = 1;
-	private final int mPeak = 2;
-	private final int mFalling = 3;
-	private final int mNegative = 4;
+	//private final int mRising = 1;
+	private final int mPeak = 1;
+	//private final int mFalling = 3;
+	private final int mNegative = 2;
 	//current state instantiated at rest
 	private int currentState = 0;
 	private float zPrev = 0;
@@ -102,12 +102,12 @@ public class GeneralSensorEventListener implements SensorEventListener{
 			
 			switch(currentState){
 				case mRest:
-					if (z >= (0.1 * maxAmp)){
+					if ((y > 0.7)){
 						currentState = 1;
 					}
-					else currentState = 0;
+					//else currentState = 0;
 					break;
-				case mRising:
+				/*case mRising:
 					if (z >= (0.9 * maxAmp)){
 						currentState = 2;
 					}
@@ -115,26 +115,27 @@ public class GeneralSensorEventListener implements SensorEventListener{
 						currentState = 0;
 					}
 					break;
+					*/
 				case mPeak:
-					if (z > mCurrentMax){
+					/*if ((z > mCurrentMax)&&(z >= 1)){
 						mCurrentMax = z;
-					}	
-					if (z <= (0.9 * maxAmp)){
-						currentState = 3;
+					}*/	
+					if (z >= 1){
+						currentState = 2;
 					}
 					
 					break;
-				case mFalling:
+				/*case mFalling:
 					if (z <= (maxAmp * 0.1)){
 						currentState = 4;
-					}
+					}*/
 				case mNegative:
 					if (z <=-0.5){
-						mNumOfAverage++;
-						mAverageMax = (mAverageMax + mCurrentMax)/mNumOfAverage ;
-						mCurrentMax = 0;
+						//mNumOfAverage++;
+						//mAverageMax = (mAverageMax + mCurrentMax)/mNumOfAverage ;
+						//mCurrentMax = 0;
 						stepCounter++;
-			
+			/*
 						if(mNumOfAverage == 5){
 							if (mAverageMax > 0.7){
 								maxAmp = mAverageMax;
@@ -146,7 +147,7 @@ public class GeneralSensorEventListener implements SensorEventListener{
 								mNumOfAverage = 0;
 							}
 				
-						}
+						}*/
 						currentState = 0;
 					}
 					break;
