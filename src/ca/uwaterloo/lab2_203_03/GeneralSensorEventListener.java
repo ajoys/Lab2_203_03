@@ -104,7 +104,7 @@ public class GeneralSensorEventListener implements SensorEventListener{
 				case mRest:
 					if ((y > 0.7)){
 						currentState = 1;
-					}
+					} 
 					//else currentState = 0;
 					break;
 				/*case mRising:
