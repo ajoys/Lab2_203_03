@@ -107,7 +107,7 @@ public class GeneralSensorEventListener implements SensorEventListener{
 					else currentState = 0;
 					break;
 				case mRising:
-					if (z >= (0.9 * maxAmp)){
+					if (z >= (0.7 * maxAmp)){
 						currentState = 2;
 					}
 					else if(z <= (0.1 * maxAmp)){
