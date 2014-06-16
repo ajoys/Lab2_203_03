@@ -25,7 +25,7 @@ public class GeneralSensorEventListener implements SensorEventListener{
 	private float x;
 	private float y;
 	private float z;
-	private float maxAmp = (float)2.0;
+	private float maxAmp = (float)1.0;
 	private int stepCounter;
 	// values for the FSM
 	private final int mRest = 0;
@@ -108,7 +108,10 @@ public class GeneralSensorEventListener implements SensorEventListener{
 					break;
 				case mRising:
 					if (z >= (0.7 * maxAmp)){
-						currentState = 2;
+						if (y < 0.5 && x < 0.5){
+							currentState = 0;
+						}
+						else currentState = 2;
 					}
 					else if(z <= (0.1 * maxAmp)){
 						currentState = 0;
@@ -119,11 +122,7 @@ public class GeneralSensorEventListener implements SensorEventListener{
 						mCurrentMax = z;
 					}
 					
-					if (y < 0.5 && x < 0.5 && z > 0.9 * maxAmp){
-						currentState = 0;
-					}
-					
-					else if (z <= (0.9 * maxAmp)){
+					if (z <= (0.7 * maxAmp)){
 						currentState = 3;
 					}
 					
@@ -133,7 +132,7 @@ public class GeneralSensorEventListener implements SensorEventListener{
 						currentState = 4;
 					}
 				case mNegative:
-					if (z <=-0.5){
+					if (z <=0){
 						mNumOfAverage++;
 						mAverageMax = (mAverageMax + mCurrentMax)/mNumOfAverage ;
 						mCurrentMax = 0;
