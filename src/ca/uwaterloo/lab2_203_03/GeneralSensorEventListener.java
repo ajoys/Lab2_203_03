@@ -35,7 +35,6 @@ public class GeneralSensorEventListener implements SensorEventListener{
 	private final int mNegative = 4;
 	//current state instantiated at rest
 	private int currentState = 0;
-	private float zPrev = 0;
 	static LineGraphView graph;
 	
 	// Constructor calls addTextView and initializes string sensortype. 
@@ -118,8 +117,13 @@ public class GeneralSensorEventListener implements SensorEventListener{
 				case mPeak:
 					if (z > mCurrentMax){
 						mCurrentMax = z;
-					}	
-					if (z <= (0.9 * maxAmp)){
+					}
+					
+					if (y < 0.5 && x < 0.5 && z > 0.9 * maxAmp){
+						currentState = 0;
+					}
+					
+					else if (z <= (0.9 * maxAmp)){
 						currentState = 3;
 					}
 					
