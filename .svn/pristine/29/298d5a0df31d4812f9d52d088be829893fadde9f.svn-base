@@ -16,6 +16,9 @@ public class GeneralSensorEventListener implements SensorEventListener{
 	private TextView mTvGen;			// General Text View
 	private String sensorType;			// Used to know what kind of sensor is being used
 	//Max Values
+	private float xMaxValueAccel = 0;
+	private float yMaxValueAccel = 0;
+	private float zMaxValueAccel =0;
 	private float mNumOfAverage = 0;
 	private float mAverageMax = 0;
 	private float mCurrentMax = 0;
@@ -58,11 +61,11 @@ public class GeneralSensorEventListener implements SensorEventListener{
 		resetMax.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v)
 		    {
-
+		    	xMaxValueAccel = 0;
+		    	yMaxValueAccel = 0;
+		    	zMaxValueAccel =0;
 		    	stepCounter = 0;
 		    	mNumOfAverage = 0;
-		    	mAverageMax = 0;
-		    	maxAmp = (float)1.0;
 		    } 
 		});
 	}
@@ -90,6 +93,11 @@ public class GeneralSensorEventListener implements SensorEventListener{
 			String value = String.format("\nX:%.4f "
 					+ "\nY:%.4f"
 					+ "\nZ:%.4f \n", x, y, z);
+			
+			//updating max values to textView
+			String maxValues = String.format("\nX-Max:%.4f "
+					+ "\nY-Max:%.4f"
+					+ "\nZ-Max:%.4f \n", xMaxValueAccel, yMaxValueAccel, zMaxValueAccel);
 			
 			//Switch statement to implement a FSM
 			switch(currentState){
@@ -165,7 +173,8 @@ public class GeneralSensorEventListener implements SensorEventListener{
 					break;//Exiting Case
 			}
 			//Outputting the date values
-			mTvGen.setText("----" + sensorType + "-----" + value + "\n\nSteps: " + stepCounter );
+			mTvGen.setText("----" + sensorType + "-----" + value + "\n\nSteps: " + stepCounter + "\n Average: " 
+					+ mAverageMax + "\n" + maxAmp + "\n" + mNumOfAverage + "\nCurrentState" + currentState );
 		}
 	}
 
